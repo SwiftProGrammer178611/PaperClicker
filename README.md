@@ -7,5 +7,6 @@ Link to try it out: https://paper-clicker.vercel.app/
 Press R to start clicking
 Hold R for 2 seconds to purchase the first upgrade in the list
 Hold R for 4 seconds to purchase the next item in the List.
+The game automatically counts up, and faster based on the purchases of your upgrades
 
 Thats it! I hope you have fun! 
