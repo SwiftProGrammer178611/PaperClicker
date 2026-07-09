@@ -180,10 +180,34 @@ body{
     display: flex;
     gap: 15px;
 }
-.util-button{
+.utilButton{
     padding: 8px 13px;
     font-size : 16px;
     font-weight: 600;
     font-family: inherit;
     border-radius: 6px ;
+}
+
+.right {
+    max-height: 400px;
+    width:550px;
+    padding:20px 5px;
+    overflow-y:scroll;
+
+}
+
+::-webkit-scrollbar{
+    width: 10px;
+}
+
+::-webkit-scrollbar-track{
+    background: white;
+}
+
+::-webkit-scrollbar-thumb{
+    background: rgb(26, 41, 126);
+}
+
+::-webkit-scrollbar-thumb{
+    background: rgb(162, 166, 186);
 }
