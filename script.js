@@ -14,6 +14,11 @@ let pliersLevel = document.querySelector('.pliers-level')
 let pliersIncrease = document.querySelector('.pliers-increase')
 let parsedPliersIncrease = parseFloat(pliersIncrease.innerHTML);
 
+let holdTimer = null;
+let keyPressed = false;
+let pressStartTime = 0;
+
+
 
 
 function incrementGem() {
@@ -51,4 +56,39 @@ function buyPliers() {
 
     }
 }
+
+window.addEventListener('keydown', function(event) {
+    if(event.key.toLowerCase() === 'r'){
+        if(keyPressed) return;
+        event.preventDefault();
+
+        keyPressed = true;
+        pressStartTime = Date.now();
+
+        holdTimer = this.setInterval(function() {
+            let holdTime = (Date.now() - pressStartTime) /1000;
+
+            if(holdTime >= 4.0){
+                buyPliers();
+                clearInterval(holdTimer);
+
+            }else if(holdTime >= 2.0 && holdTime < 2.1){
+                buyClicker();
+            }
+        }, 100);
+    }
+});
+
+window.addEventListener('keyup', function(e){
+    if(e.key.toLowerCase() === 'r'){
+        let holdTime = (Date.now()- pressStartTime)/1000;
+
+        if(holdTime<2.0){
+            incrementGem();
+        }
+
+        clearInterval(holdTimer);
+        keyPressed = false;
+    }
+})
 
