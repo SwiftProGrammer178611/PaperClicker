@@ -24,12 +24,45 @@ let holdTimer = null;
 let keyPressed = false;
 let pressStartTime = 0;
 
+let gpcText = document.getElementById("gpc-text");
+let gpsText = document.getElementById("gps-text")
+
+let paperClipImgContainer = document.querySelector(".paperClipDocumentContainer");
 
 
-
-function incrementGem() {
+function incrementGem(event) {
     gem.innerHTML = Math.round(parsedGem += gpc);
+
+    let x,y;
+    if(event && event.type ==='click'){
+        const x = event.offsetX;
+        const y = event.offsetY;
+
+    }else{
+            const containerWidth = paperClipImgContainer?paperClipImgContainer.offsetWidth:150;
+            const containerHeight = paperClipImgContainer?paperClipImgContainer.offsetHeight:150;
+
+            x=Math.floor(Math.random() * (containerWidth - 4)) +20;
+            y= Math.floor(Math.random() * (containerHeight - 40))+20;
+        }
+    
+    const div = document.createElement('div');
+    div.innerHTML = `+${Math.round(gpc)}`
+    div.style.cssText = `color: white; position:absolute; top:${y}px; left:${x}px; font-size:15px; pointer-events: none;`
+
+    if(paperClipImgContainer){
+        paperClipImgContainer.appendChild(div);
+        div.classList.add('fade-up');
+        timeout(div);
+    }
 }
+
+//to remove div +1 once the animation is done form the paperClip
+const timeout = (div => {
+    setTimeout(() => {
+        div.remove()
+    }, 800)
+})
 
 function buyClicker() {
     if(parsedGem >= parsedClickerCost){
@@ -96,7 +129,7 @@ window.addEventListener('keydown', function(event) {
         keyPressed = true;
         pressStartTime = Date.now();
 
-        holdTimer = this.setInterval(function() {
+        holdTimer = setInterval(function() {
             let holdTime = (Date.now() - pressStartTime) /1000;
 
             if(holdTime >= 6.0){
@@ -118,7 +151,7 @@ window.addEventListener('keyup', function(e){
         let holdTime = (Date.now()- pressStartTime)/1000;
 
         if(holdTime<2.0){
-            incrementGem();
+            incrementGem(e);
         }
 
         clearInterval(holdTimer);
@@ -131,5 +164,6 @@ setInterval(() => {
         parsedGem += gps/10;
         gem.innerHTML = Math.round(parsedGem);
     }
-    
+    gpcText.innerHTML = Math.round(gpc);
+    gpsText.innerHTML = Math.round(gps);
 }, 100);

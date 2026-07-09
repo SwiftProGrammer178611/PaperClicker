@@ -11,7 +11,10 @@
         <div class="main">
             <div class="left">
                 <h3 class="text-highlight">Gem: <span class = "gem-cost">0</span></h3>
-                <img src="./assets/paperClip.png" alt="" srcset="" class="gem-image", onclick ="incrementGem()" draggable="false">
+                <div class="paperClipDocumentContainer">
+                    <img src="./assets/paperClip.png" alt="" srcset="" class="gem-image", onclick ="incrementGem(event)" draggable="false">
+                </div>
+                
             </div>
             <div class="right text-highlight">
                 <div class="upgrade" onclick = "buyClicker()">
@@ -83,6 +86,14 @@
             </div>
         </div>
     </section>
+
+    <div class="statistics">
+        <div class = "texts">
+            <p>GPC: <span id = "gpc-text">0</span></p>
+            <p>GPS: <span id = "gps-text">1</span></p>
+
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
