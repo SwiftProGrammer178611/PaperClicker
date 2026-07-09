@@ -1,5 +1,19 @@
-let gem = document.getElementById('.gem-cost')
+let gem = document.querySelector('.gem-cost')
 
-function incrementGame() {
-    gem.innerHTML = parseFloat(gem.innerHTML+1);
+let clickerCost = document.querySelector('.clicker-cost')
+
+let parsedGem = parseFloat(gem.innerHTML);
+
+let parsedClickerCost = parseFloat(clickerCost.innerHTML);
+
+function incrementGem() {
+    parsedGem += 1
+    gem.innerHTML = parsedGem
+}
+
+function buyClicker() {
+    if(parsedGem >= parsedClickerCost){
+        parsedGem -= parsedClickerCost
+        gem.innerHTML = parsedGem
+    }
 }
