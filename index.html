@@ -4,23 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Clicker Game</title>
+    <titleClicker Game</title>
 </head>
 <body>
     <section>
         <div class="main">
             <div class="left">
-                <h3>Gem: <span class = "gem-cost">0</span></h3>
+                <h3 class="text-highlight">Gem: <span class = "gem-cost">0</span></h3>
                 <img src="./assets/paperClip.png" alt="" srcset="" class="gem-image", onclick ="incrementGem()" draggable="false">
             </div>
-            <div class="right">
+            <div class="right text-highlight">
                 <div class="upgrade" onclick = "buyClicker()">
                     <div class="left-sectionb">
                         <img src="./assets/clicker.png" alt="" class="upgrade-img">
                     </div>
                      <div class="mid-section">
-                        <h4>Clicker</h4>
-                        <div class="cost-info">
+                        <h4 class="text-highlight">Clicker</h4>
+                        <div class="cost-info text-highlight">
                             <p>Cost:<span class="clicker-cost">10</span></p>
                             <img src="./assets/paperClip.png" alt="" srcset="" class="gem-img">
                         </div>
@@ -34,20 +34,21 @@
                         </p>
                     </div>
                 </div>
+                <br/>
 
                 <div class="upgrade" onclick = "buyPliers()">
                     <div class="left-section">
                         <img src="./assets/pliers.png" alt="" class="upgrade-img">
                     </div>
                      <div class="mid-section">
-                        <h4>Ergonomic Pliers</h4>
-                        <h6>These greatly reduce your handstrain</h6>
+                        <h4 class="text-highlight">Ergonomic Pliers</h4>
+                        <h6 class="text-highlight">These greatly reduce your handstrain</h6>
                         <div class="cost-info">
                             <p>Cost:<span class="pliers-cost">130</span></p>
                             <img src="./assets/paperClip.png" alt="" srcset="" class="gem-img">
                         </div>
                     </div>
-                    <div class="right-section">
+                    <div class="right-section text-highlight">
                         Level<span class="pliers-level">0</span>
                     </div>
                     <div class="next-level-info">
@@ -56,6 +57,7 @@
                         </p>
                     </div>
                 </div>
+                
             </div>
         </div>
     </section>

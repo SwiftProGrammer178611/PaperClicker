@@ -1,4 +1,5 @@
 let gpc = 1;
+let gps = 0;
 let gem = document.querySelector('.gem-cost')
 let clickerCost = document.querySelector('.clicker-cost');
 let parsedGem = parseFloat(gem.innerHTML);
@@ -92,3 +93,7 @@ window.addEventListener('keyup', function(e){
     }
 })
 
+setInterval(() => {
+    parsedGem += gps/10;
+    gem.innerHTML = Math.round(parsedGem);
+}, 100)
