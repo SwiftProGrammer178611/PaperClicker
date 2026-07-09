@@ -8,12 +8,17 @@ let clickerLevel = document.querySelector('.clicker-level')
 let clickerIncrease = document.querySelector('.clicker-increase')
 let parsedClickerIncrease = parseFloat(clickerIncrease.innerHTML);
 
-
 let pliersCost = document.querySelector('.pliers-cost');
 let parsedPliersCost = parseFloat(pliersCost.innerHTML);
 let pliersLevel = document.querySelector('.pliers-level')
 let pliersIncrease = document.querySelector('.pliers-increase')
 let parsedPliersIncrease = parseFloat(pliersIncrease.innerHTML);
+
+let doubPliersCost = document.querySelector('.doublepliers-cost');
+let parseddoubPliersCost = parseFloat(doubPliersCost.innerHTML);
+let doubPliersLevel = document.querySelector('.doublepliers-level')
+let doubPliersIncrease = document.querySelector('.doublepliers-increase')
+let parseddoubPliersIncrease = parseFloat(doubPliersIncrease.innerHTML);
 
 let holdTimer = null;
 let keyPressed = false;
@@ -52,14 +57,33 @@ function buyPliers() {
         gem.innerHTML = Math.round(parsedGem);
         pliersLevel.innerHTML ++;
 
-        parsedPliersIncrease = parseFloat((parsedPliersIncrease *1.03).toFixed(2));
+        parsedPliersIncrease = parseFloat((parsedPliersIncrease *2.03).toFixed(2));
         pliersIncrease.innerHTML = parsedPliersIncrease;
         gpc+= parsedPliersIncrease;
 
         gps += parsedPliersIncrease;
 
-        parsedPliersCost *= 1.18;
+        parsedPliersCost *= 2.18;
         pliersCost.innerHTML = Math.round(parsedPliersCost);
+
+    }
+}
+
+function buyDoublePliers() {
+    if(parsedGem >= parseddoubPliersCost){
+        parsedGem -= parseddoubPliersCost;
+
+        gem.innerHTML = Math.round(parsedGem);
+        doubPliersLevel.innerHTML ++;
+
+        parseddoubPliersIncrease = parseFloat((parseddoubPliersIncrease *3.03).toFixed(2));
+        doubPliersIncrease.innerHTML = parseddoubPliersIncrease;
+        gpc+= parseddoubPliersIncrease;
+
+        gps += parseddoubPliersIncrease;
+
+        parseddoubPliersCost *= 3.18;
+        doubPliersCost.innerHTML = Math.round(parseddoubPliersCost);
 
     }
 }
@@ -75,13 +99,16 @@ window.addEventListener('keydown', function(event) {
         holdTimer = this.setInterval(function() {
             let holdTime = (Date.now() - pressStartTime) /1000;
 
-            if(holdTime >= 4.0){
-                buyPliers();
+            if(holdTime >= 6.0){
+                buyDoublePliers();
                 clearInterval(holdTimer);
 
+            }else if(holdTime >= 4.0 && holdTime < 4.1){
+                buyPliers();
             }else if(holdTime >= 2.0 && holdTime < 2.1){
                 buyClicker();
             }
+
         }, 100);
     }
 });
