@@ -33,7 +33,7 @@ body{
 
 .gem-image{
     width: 150px;
-    background-color: rgb(135, 93, 37);
+    background-color: #C92C32;
     border-radius: 40px;
     transition: opacity 0.3s ease, transform 0.1s ease;
 }
@@ -88,11 +88,12 @@ body{
 .next-level-info{
     position: absolute; /* positions this container wiht ref. to the upgrade container where we put pos:relative*/
     right: -100px;
-    background-color: rgb(90,89,90);
-    height:80px;
-    width:100px;
+    background-color: #C92C32;
+    height:100px;
+    width:120px;
     text-align: center;
     display: none;
+    border-radius: 20px;
 }
 .upgrade:hover .next-level-info{
     display: block;

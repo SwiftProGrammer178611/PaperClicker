@@ -28,29 +28,35 @@ function incrementGem() {
 
 function buyClicker() {
     if(parsedGem >= parsedClickerCost){
-        gem.innerHTML = Math.round(parsedGem-parsedClickerCost);
+        parsedGem -= parsedClickerCost;
+
+        gem.innerHTML = Math.round(parsedGem);
+        
 
         clickerLevel.innerHTML ++
 
         parsedClickerIncrease = parseFloat((parsedClickerIncrease *1.03).toFixed(2));
         clickerIncrease.innerHTML = parsedClickerIncrease;
         gpc+= parsedClickerIncrease;
-
+        gps += parsedClickerIncrease;
         parsedClickerCost *= 1.18;
         clickerCost.innerHTML = Math.round(parsedClickerCost);
-
+        
     }
 }
 
 function buyPliers() {
     if(parsedGem >= parsedPliersCost){
-        gem.innerHTML = Math.round(parsedGem-=parsedPliersCost);
+        parsedGem -= parsedPliersCost;
 
+        gem.innerHTML = Math.round(parsedGem);
         pliersLevel.innerHTML ++;
 
         parsedPliersIncrease = parseFloat((parsedPliersIncrease *1.03).toFixed(2));
         pliersIncrease.innerHTML = parsedPliersIncrease;
         gpc+= parsedPliersIncrease;
+
+        gps += parsedPliersIncrease;
 
         parsedPliersCost *= 1.18;
         pliersCost.innerHTML = Math.round(parsedPliersCost);
@@ -91,9 +97,12 @@ window.addEventListener('keyup', function(e){
         clearInterval(holdTimer);
         keyPressed = false;
     }
-})
+});
 
 setInterval(() => {
-    parsedGem += gps/10;
-    gem.innerHTML = Math.round(parsedGem);
-}, 100)
+    if( gps>0){
+        parsedGem += gps/10;
+        gem.innerHTML = Math.round(parsedGem);
+    }
+    
+}, 100);
