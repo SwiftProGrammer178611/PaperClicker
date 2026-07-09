@@ -1,24 +1,9 @@
 let gpc = 1;
 let gps = 0;
 let gem = document.querySelector('.gem-cost')
-let clickerCost = document.querySelector('.clicker-cost');
+
 let parsedGem = parseFloat(gem.innerHTML);
-let parsedClickerCost = parseFloat(clickerCost.innerHTML);
-let clickerLevel = document.querySelector('.clicker-level')
-let clickerIncrease = document.querySelector('.clicker-increase')
-let parsedClickerIncrease = parseFloat(clickerIncrease.innerHTML);
 
-let pliersCost = document.querySelector('.pliers-cost');
-let parsedPliersCost = parseFloat(pliersCost.innerHTML);
-let pliersLevel = document.querySelector('.pliers-level')
-let pliersIncrease = document.querySelector('.pliers-increase')
-let parsedPliersIncrease = parseFloat(pliersIncrease.innerHTML);
-
-let doubPliersCost = document.querySelector('.doublepliers-cost');
-let parseddoubPliersCost = parseFloat(doubPliersCost.innerHTML);
-let doubPliersLevel = document.querySelector('.doublepliers-level')
-let doubPliersIncrease = document.querySelector('.doublepliers-increase')
-let parseddoubPliersIncrease = parseFloat(doubPliersIncrease.innerHTML);
 
 let holdTimer = null;
 let keyPressed = false;
@@ -29,6 +14,38 @@ let gpsText = document.getElementById("gps-text")
 
 let paperClipImgContainer = document.querySelector(".paperClipDocumentContainer");
 
+const upgrades = [
+    {
+        name: 'clicker',
+        cost: document.querySelector('.clicker-cost'),
+        parsedCost: parseFloat(document.querySelector('.clicker-cost').innerHTML),
+        increase: document.querySelector('.clicker-increase'),
+        parsedIncrease: parseFloat(document.querySelector('.clicker-increase').innerHTML),
+        level: document.querySelector('.clicker-level'),
+        multiplier: 1.025,
+        costMultiplier: 1.12,
+    },
+    {
+        name: 'pliers',
+        cost: document.querySelector('.pliers-cost'),
+        parsedCost: parseFloat(document.querySelector('.pliers-cost').innerHTML),
+        increase: document.querySelector('.pliers-increase'),
+        parsedIncrease: parseFloat(document.querySelector('.pliers-increase').innerHTML),
+        level: document.querySelector('.pliers-level'),
+        multiplier: 12.025,
+        costMultiplier: 2.18,
+    },
+    {
+        name: 'doublePliers',
+        cost: document.querySelector('.doublepliers-cost'),
+        parsedCost: parseFloat(document.querySelector('.doublepliers-cost').innerHTML),
+        increase: document.querySelector('.doublepliers-increase'),
+        parsedIncrease: parseFloat(document.querySelector('.doublepliers-increase').innerHTML),
+        level: document.querySelector('.doublepliers-level'),
+        multiplier: 3.025,
+        costMultiplier: 3.18,
+    },
+]
 
 function incrementGem(event) {
     gem.innerHTML = Math.round(parsedGem += gpc);
@@ -57,69 +74,46 @@ function incrementGem(event) {
     }
 }
 
+function buyUpgrade(upgrade) {
+    const mu = upgrades.find((u) => {
+        if(u.name === upgrade) return u;
+    })
+    if(parsedGem >= mu.parsedCost){
+        gem.innerHTML   = Math.round(parsedGem -= mu.parsedCost);
+
+        mu.level.innerHTML ++
+
+        mu.parsedIncrease = parseFloat((mu.parsedIncrease * mu.multiplier).toFixed(2));
+        mu.increase.innerHTML = mu.parsedIncrease;
+
+        mu.parsedCost*=mu.costMultiplier;
+        mu.cost.innerHTML = Math.round(mu.parsedCost);
+
+        if(mu.name === 'clicker'){
+            gpc+=mu.parsedIncrease;
+            
+        }else{
+            gps += mu.parsedIncrease;
+        }
+    }
+
+    
+}
+
+function save (){
+
+}
+
+function load() {
+    
+}
+
 //to remove div +1 once the animation is done form the paperClip
 const timeout = (div => {
     setTimeout(() => {
         div.remove()
     }, 800)
 })
-
-function buyClicker() {
-    if(parsedGem >= parsedClickerCost){
-        parsedGem -= parsedClickerCost;
-
-        gem.innerHTML = Math.round(parsedGem);
-        
-
-        clickerLevel.innerHTML ++
-
-        parsedClickerIncrease = parseFloat((parsedClickerIncrease *1.03).toFixed(2));
-        clickerIncrease.innerHTML = parsedClickerIncrease;
-        gpc+= parsedClickerIncrease;
-        gps += parsedClickerIncrease;
-        parsedClickerCost *= 1.18;
-        clickerCost.innerHTML = Math.round(parsedClickerCost);
-        
-    }
-}
-
-function buyPliers() {
-    if(parsedGem >= parsedPliersCost){
-        parsedGem -= parsedPliersCost;
-
-        gem.innerHTML = Math.round(parsedGem);
-        pliersLevel.innerHTML ++;
-
-        parsedPliersIncrease = parseFloat((parsedPliersIncrease *2.03).toFixed(2));
-        pliersIncrease.innerHTML = parsedPliersIncrease;
-        gpc+= parsedPliersIncrease;
-
-        gps += parsedPliersIncrease;
-
-        parsedPliersCost *= 2.18;
-        pliersCost.innerHTML = Math.round(parsedPliersCost);
-
-    }
-}
-
-function buyDoublePliers() {
-    if(parsedGem >= parseddoubPliersCost){
-        parsedGem -= parseddoubPliersCost;
-
-        gem.innerHTML = Math.round(parsedGem);
-        doubPliersLevel.innerHTML ++;
-
-        parseddoubPliersIncrease = parseFloat((parseddoubPliersIncrease *3.03).toFixed(2));
-        doubPliersIncrease.innerHTML = parseddoubPliersIncrease;
-        gpc+= parseddoubPliersIncrease;
-
-        gps += parseddoubPliersIncrease;
-
-        parseddoubPliersCost *= 3.18;
-        doubPliersCost.innerHTML = Math.round(parseddoubPliersCost);
-
-    }
-}
 
 window.addEventListener('keydown', function(event) {
     if(event.key.toLowerCase() === 'r'){
