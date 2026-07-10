@@ -1,35 +1,32 @@
 
-import {upgrades} from "./constants/upgrades.js";
-
+import {powerUpIntervals, upgrades} from "./constants/upgrades.js";
 let gpc = 1;
 let gps = 0;
 const bgm = new Audio('./assets/audio/bgm.mp3');
 bgm.volume = 0.2
-const clickingSound = new Audio('/assets/audio.click.wav.mp3')
-const upgradeSound = new Audio('/assets/upgrade.mp3');
 let gem = document.querySelector('.gem-cost')
-
 let parsedGem = parseFloat(gem.innerHTML);
-
-
 let holdTimer = null;
 let keyPressed = false;
 let pressStartTime = 0;
-
 let gpcText = document.getElementById("gpc-text");
 let gpsText = document.getElementById("gps-text")
-
 let paperClipImgContainer = document.querySelector(".paperClipDocumentContainer");
 
 
-
 function incrementGem(event) {
+    //this is for rly fast clickers. The thing is, 
+    //the sound wouldn't play if you clicked too fast. So if the clickingSound is down here, a new instance would be made each time
+    //therefore, removing that issue!
+    const clickingSound = new Audio('/assets/audio/click.wav')
+    clickingSound.play()
+
     gem.innerHTML = Math.round(parsedGem += gpc);
 
     let x,y;
     if(event && event.type ==='click'){
-        const x = event.offsetX;
-        const y = event.offsetY;
+         x = event.offsetX;
+         y = event.offsetY;
 
     }else{
             const containerWidth = paperClipImgContainer?paperClipImgContainer.offsetWidth:150;
@@ -49,34 +46,63 @@ function incrementGem(event) {
         timeout(div);
     }
 }
-
 function buyUpgrade(upgrade) {
     const mu = upgrades.find((u) => {
         if(u.name === upgrade) return u;
     })
+
+    const upgradeDiv = document.getElementById(`${mu.name}-upgrade`)
+    const nextLevelDiv = document.getElementById(`${mu.name}-next-level`)
+    const nextLevelP = document.getElementById(`${mu.name}-next-p`)
+
     if(parsedGem >= mu.parsedCost){
+        const upgradeSound = new Audio('./assets/audio/click.mp3');
+        upgradeSound.volume = 0.3
+        upgradeSound.play()
         gem.innerHTML   = Math.round(parsedGem -= mu.parsedCost);
 
-        mu.level.innerHTML ++
+        let index = powerUpIntervals.indexOf(parseFloat(mu.level.innerHTML) +1)
+        if(index !==-1){
+            upgradeDiv.style.cssText = `border-color: white`;
+            nextLevelDiv.style.cssText = `background-color: #CC4500; font-weight: normal`;
+            nextLevelP.innerHTML = mu.powerUps[index].description
+            mu.cost.innerHTML = Math.round(mu.parsedCost *= mu.costMultiplier)
 
-        mu.parsedIncrease = parseFloat((mu.parsedIncrease * mu.multiplier).toFixed(2));
-        mu.increase.innerHTML = mu.parsedIncrease;
+            if(mu.name === 'clicker'){
+                gpc *= mu.powerUps[index].multiplier
+                nextLevelP.innerHTML = `${mu.parsedIncrease} gems per click`
+            }else{
+                gps -= mu.power
+                mu.power *= mu.powerUps[index].multiplier
+                gps += mu.power
+                nextLevelP.innerHTML = `${mu.parsedIncrease} gems per second`
+            }
+        }
+        mu.level.innerHTML ++;
+        
+        
+        if(index!==-1){
+            upgradeDiv.style.cssText = `border-color: orange`;
+            nextLevelDiv.style.cssText = `background-color: #CC4500; font-weight: bold`;
+            nextLevelP.innerHTML = mu.powerUps[index].description
 
-        mu.parsedCost*=mu.costMultiplier;
-        mu.cost.innerHTML = Math.round(mu.parsedCost);
+            mu.cost.innerHTML = Math.round(moveBy.parsedCost = mu.parsedCost * 2.5 * 1.004 ** parseFloat(mu.level.innerHTML))
+        } else{
+            mu.cost.innerHTML = Math.round(mu.parsedCost *= mu.costMultiplier);
+            mu.parsedIncrease = parseFloat((mu.parsedIncrease * mu.multiplier).toFixed(2));
 
-        if(mu.name === 'clicker'){
-            gpc+=mu.parsedIncrease;
-            
-        }else{
-            gps += mu.parsedIncrease;
+            if(mu.name === 'clicker') nextLevelP.innerHTML = `${mu.parsedIncrease} gems per click`
+            else nextLevelP.innerHTML = `+${mu.parsedIncrease} gems per second`
+        }
+
+        if(mu.name === 'clicker') gpc += mu.parsedIncrease
+        else{
+            gps -= mu.power
+            mu.power += mu.parsedIncrease
+            gps += mu.power
         }
     }
-
-    
 }
-
-
 //localStorage being used here bruvs. fancy schmancy
 function save (){
     localStorage.clear();
@@ -98,7 +124,6 @@ function save (){
     localStorage.setItem('gps',JSON.stringify(gps))
     localStorage.setItem('gem',JSON.stringify([parsedGem]))
 }
-
 function load() {
     upgrades.map(upgrade => {
         const savedValues = JSON.parse(localStorage.getItem(upgrade.name))
@@ -118,14 +143,12 @@ function load() {
 
     gem.innerHTML = Math.round(parsedGem)
 }
-
 //to remove div +1 once the animation is done form the paperClip
 const timeout = (div => {
     setTimeout(() => {
         div.remove()
     }, 800)
 })
-
 window.addEventListener('keydown', function(event) {
     if(event.key.toLowerCase() === 'r'){
         if(keyPressed) return;
@@ -143,14 +166,13 @@ window.addEventListener('keydown', function(event) {
 
             } else if ( holdTime >= 4.0 && holdTime <4.1){
                 buyUpgrade('pliers')
-            }else if(holdTime >= 2.0 && holdTIme < 2.1){
+            }else if(holdTime >= 2.0 && holdTime < 2.1){
                 buyUpgrade('clicker');
             }
 
         }, 100);
     }
 });
-
 window.addEventListener('keyup', function(e){
     if(e.key.toLowerCase() === 'r'){
         let holdTime = (Date.now()- pressStartTime)/1000;
@@ -163,7 +185,6 @@ window.addEventListener('keyup', function(e){
         keyPressed = false;
     }
 });
-
 setInterval(() => {
     if( gps>0){
         parsedGem += gps/10;
@@ -171,9 +192,10 @@ setInterval(() => {
     }
     gpcText.innerHTML = Math.round(gpc);
     gpsText.innerHTML = Math.round(gps);
+    bgm.play();
 }, 100);
-
 window.incrementGem = incrementGem
 window.buyUpgrade = buyUpgrade
 window.save = save
 window.load = load
+

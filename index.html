@@ -17,7 +17,7 @@
                 
             </div>
             <script id="upgrade-template" type = "text/template">
-                <div class="upgrade" onclick = "buyUpgrade('{{name}}')">
+                <div class="upgrade" onclick = "buyUpgrade('{{name}}')" id = "{{name}}-upgrade">
                     <div class="left-section">
                         <img src="{{image}}" alt="" class="upgrade-img">
                     </div>
@@ -32,8 +32,8 @@
                     <div class="right-section text-highlight">
                         Level<span class="{{name}}-level">0</span>
                     </div>
-                    <div class="next-level-info">
-                        <p>
+                    <div class="next-level-info" id="{{name}}-next-level">
+                        <p id="{{name}}-next-p">
                             +<span class="{{name}}-increase">{{increase}}</span> gems<br/> per second
                         </p>
                     </div>
