@@ -201,13 +201,14 @@ body{
 }
 
 ::-webkit-scrollbar-track{
-    background: white;
+    background: rgb(21, 75, 139);
 }
 
 ::-webkit-scrollbar-thumb{
-    background: rgb(26, 41, 126);
+    background: rgb(82, 171, 116);
 }
 
 ::-webkit-scrollbar-thumb{
-    background: rgb(162, 166, 186);
+    background: rgb(53, 72, 163);
 }
+

@@ -1,5 +1,12 @@
+
+import {upgrades} from "./constants/upgrades.js";
+
 let gpc = 1;
 let gps = 0;
+const bgm = new Audio('./assets/audio/bgm.mp3');
+bgm.volume = 0.2
+const clickingSound = new Audio('/assets/audio.click.wav.mp3')
+const upgradeSound = new Audio('/assets/upgrade.mp3');
 let gem = document.querySelector('.gem-cost')
 
 let parsedGem = parseFloat(gem.innerHTML);
@@ -14,38 +21,7 @@ let gpsText = document.getElementById("gps-text")
 
 let paperClipImgContainer = document.querySelector(".paperClipDocumentContainer");
 
-const upgrades = [
-    {
-        name: 'clicker',
-        cost: document.querySelector('.clicker-cost'),
-        parsedCost: parseFloat(document.querySelector('.clicker-cost').innerHTML),
-        increase: document.querySelector('.clicker-increase'),
-        parsedIncrease: parseFloat(document.querySelector('.clicker-increase').innerHTML),
-        level: document.querySelector('.clicker-level'),
-        multiplier: 1.025,
-        costMultiplier: 1.12,
-    },
-    {
-        name: 'pliers',
-        cost: document.querySelector('.pliers-cost'),
-        parsedCost: parseFloat(document.querySelector('.pliers-cost').innerHTML),
-        increase: document.querySelector('.pliers-increase'),
-        parsedIncrease: parseFloat(document.querySelector('.pliers-increase').innerHTML),
-        level: document.querySelector('.pliers-level'),
-        multiplier: 12.025,
-        costMultiplier: 2.18,
-    },
-    {
-        name: 'doublePliers',
-        cost: document.querySelector('.doublepliers-cost'),
-        parsedCost: parseFloat(document.querySelector('.doublepliers-cost').innerHTML),
-        increase: document.querySelector('.doublepliers-increase'),
-        parsedIncrease: parseFloat(document.querySelector('.doublepliers-increase').innerHTML),
-        level: document.querySelector('.doublepliers-level'),
-        multiplier: 3.025,
-        costMultiplier: 3.18,
-    },
-]
+
 
 function incrementGem(event) {
     gem.innerHTML = Math.round(parsedGem += gpc);
@@ -120,7 +96,7 @@ function save (){
 
     localStorage.setItem('gpc',JSON.stringify(gpc))
     localStorage.setItem('gps',JSON.stringify(gps))
-    localStorage.setItem('gem',JSON.stringify(gem))
+    localStorage.setItem('gem',JSON.stringify([parsedGem]))
 }
 
 function load() {
@@ -138,7 +114,7 @@ function load() {
 
     gpc = JSON.parse(localStorage.getItem('gpc'))
     gps = JSON.parse(localStorage.getItem('gps'))
-    parsedGem = JSON.parse(localStorage.getItem('parsedGem'))
+    parsedGem = JSON.parse(localStorage.getItem('gem'))
 
     gem.innerHTML = Math.round(parsedGem)
 }
@@ -161,14 +137,14 @@ window.addEventListener('keydown', function(event) {
         holdTimer = setInterval(function() {
             let holdTime = (Date.now() - pressStartTime) /1000;
 
-            if(holdTime >= 6.0){
-                buyDoublePliers();
+            if(holdTime>= 6.0){
+                buyUpgrade('doublepliers');
                 clearInterval(holdTimer);
 
-            }else if(holdTime >= 4.0 && holdTime < 4.1){
-                buyPliers();
-            }else if(holdTime >= 2.0 && holdTime < 2.1){
-                buyClicker();
+            } else if ( holdTime >= 4.0 && holdTime <4.1){
+                buyUpgrade('pliers')
+            }else if(holdTime >= 2.0 && holdTIme < 2.1){
+                buyUpgrade('clicker');
             }
 
         }, 100);
@@ -196,3 +172,8 @@ setInterval(() => {
     gpcText.innerHTML = Math.round(gpc);
     gpsText.innerHTML = Math.round(gps);
 }, 100);
+
+window.incrementGem = incrementGem
+window.buyUpgrade = buyUpgrade
+window.save = save
+window.load = load
